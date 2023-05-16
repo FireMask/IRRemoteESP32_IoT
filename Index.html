@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Control Remoto de TV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        html,
+        body {
+            -webkit-user-select: none;
+            /* Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE 10+/Edge */
+            user-select: none;
+            /* Estándar */
+        }
+
+        .remote-control {
+            margin: 10px 0;
+            padding: 0;
+            width: 100%;
+            background-color: rgb(235, 181, 115);
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .control-name {
+            width: 100%;
+            text-align: center;
+        }
+
+        .button {
+            width: calc(100% / 5);
+            height: 100px;
+            margin: 5px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            background-color: #525252;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .red {
+            background-color: #c33838;
+        }
+
+        .blue {
+            background-color: #3b53c9;
+        }
+
+        .green {
+            background-color: #478123;
+        }
+
+        .magenta {
+            background-color: #7a1088;
+        }
+
+        .yellow {
+            color: black;
+            background-color: #f5ff3b;
+        }
+
+        @media screen and (max-width: 480px) {
+            .button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="remote-control">
+        <h1 class="control-name">Quick Actions</h1>
+        <div class="button green" onclick="quickActionButton('turnOnOffAll')">Turn On/Off All</div>
+        <div class="button yellow" onclick="quickActionButton('changeInput')">Change Input</div>
+    </div>
+
+    <div class="remote-control">
+        <h1 class="control-name">TV</h1>
+        <div id="1" class="button red" onclick="actionButton('NEC', '0x20df10ef')">Power</div>
+        <div id="2" class="button" onclick="actionButton('NEC', '0x20dfc23d')">Config</div>
+        <div id="3" class="button" onclick="actionButton('NEC', '0x20dfd02f')">Input</div>
+        <div id="4" class="button blue" onclick="actionButton('NEC', '0x20df40bf')">Vol +</div>
+        <div id="5" class="button green" onclick="actionButton('NEC', '0x20df02fd')">Up</div>
+        <div id="6" class="button blue" onclick="actionButton('NEC', '0x20df00ff')">Ch ^</div>
+        <div id="7" class="button green" onclick="actionButton('NEC', '0x20dfe01f')">Left</div>
+        <div id="8" class="button magenta" onclick="actionButton('NEC', '0x20df22dd')">Ok</div>
+        <div id="9" class="button green" onclick="actionButton('NEC', '0x20df609f')">Right</div>
+        <div id="10" class="button blue" onclick="actionButton('NEC', '0x20df807f')">Ch v</div>
+        <div id="11" class="button green" onclick="actionButton('NEC', '0x20df827d')">Down</div>
+        <div id="12" class="button blue" onclick="actionButton('NEC', '0x20dfc03f')">Vol -</div>
+        <div id="13" class="button" onclick="actionButton('NEC', '0x20df3ec1')">Home</div>
+        <div id="14" class="button" onclick="actionButton('NEC', '0x20df906f')">Mute</div>
+        <div id="15" class="button" onclick="actionButton('NEC', '0x20dfda25')">Exit</div>
+        <div id="16" class="button" onclick="actionButton('NEC', '0x20df14eb')">Back</div>
+        <div id="17" class="button" onclick="actionButton('', '')"></div>
+        <div id="18" class="button" onclick="actionButton('', '')"></div>
+    </div>
+
+    <div class="remote-control">
+        <h1 class="control-name">Home Theater</h1>
+        <div id="19" class="button red" onclick="actionButton('SONY', '0x540c')">Power</div>
+        <div id="20" class="button blue" onclick="actionButton('SONY', '0x640c')">Vol -</div>
+        <div id="21" class="button blue" onclick="actionButton('SONY', '0x240c')">Vol +</div>
+        <div id="22" class="button green" onclick="actionButton('SONY', '0x4b0d')">Input</div>
+        <div id="23" class="button green" onclick="actionButton('SONY', '0x140c')">Mute</div>
+        <div id="24" class="button" onclick="actionButton('', '')"></div>
+    </div>
+
+    <div class="remote-control">
+        <h1 class="control-name">HDMI Switch</h1>
+        <div id="25" class="button red" onclick="actionButton('NEC', '0x44bbe01f')">Power</div>
+        <div id="26" class="button blue" onclick="actionButton('NEC', '0x44bbf00f')">1</div>
+        <div id="27" class="button blue" onclick="actionButton('NEC', '0x44bb48b7')">2</div>
+        <div id="28" class="button blue" onclick="actionButton('NEC', '0x44bbe817')">3</div>
+        <div id="29" class="button blue" onclick="actionButton('NEC', '0x44bb6897')">4</div>
+        <div id="30" class="button magenta" onclick="actionButton('NEC', '0x44bbf807')">Arc</div>
+        <div id="31" class="button magenta" onclick="actionButton('NEC', '0x44bb2ad5')">2.0</div>
+        <div id="32" class="button magenta" onclick="actionButton('NEC', '0x44bbf20d')">5.1</div>
+        <div id="33" class="button magenta" onclick="actionButton('NEC', '0x44bbd22d')">Pass</div>
+    </div>
+
+    <script>
+
+        function actionButton(platform, code) {
+            postAsync(platform, code)
+        }
+
+        function quickActionButton(action) {
+
+            let timeSpan = 100
+            let buttons = []
+
+            switch (action) {
+                case "turnOnOffAll":
+                    buttons = [
+                        document.getElementById("1"),
+                        document.getElementById("19"),
+                        document.getElementById("25")
+                    ]
+                    break;
+                case "changeInput":
+                    buttons = [
+                        document.getElementById("3"),
+                        document.getElementById("11"),
+                        document.getElementById("11"),
+                        document.getElementById("8")
+                    ]
+                    timeSpan = 2500
+                    break;
+            }
+
+            let timesRun = buttons.length
+            if(timesRun){
+                let runTimes = 0
+                let interval = setInterval(() => {
+                    console.log('run');
+                    buttons[runTimes++].click()
+                    if (runTimes >= timesRun)
+                        clearInterval(interval)
+                }, timeSpan);
+            }
+        }
+
+        function postAsync(platform, data) {
+            var formData = new FormData();
+            formData.append("platform", platform);
+            formData.append("code", data);
+
+            fetch('/send', {
+                method: "POST",
+                body: formData
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    </script>
+</body>
+
+</html>
