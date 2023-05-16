@@ -48,7 +48,7 @@ const bool EnableIRRead =  true;
 ```
 2. This will start the read/reception of the IR codes of every IR Remote.
 3. In the Serial Monitor you wil get the HEX Code and the Protocol (if it is recognized).
-4. You will map this HEX Code to a button in the HTML code
+4. You will map that HEX Code to a button in the HTML code
   ```
 Index.html
 <div id="1" class="button red" onclick="actionButton('NEC', '0x20df10ef')">Power</div>
